@@ -1,4 +1,5 @@
-# Kalman-Filter 
+# Kalman-Filter
+================
 
 This program in Python allows to fit the **Kalman filter Rescorla-Wagner model** to behavioral data.
 
