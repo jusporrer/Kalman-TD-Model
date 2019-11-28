@@ -12,7 +12,7 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 - [Kalman-Filter Rescorla-Wagner Model](#Kalman-Filter)
     - [What is the Kalman Filter?](#What-is-the-Kalman-Filter)
-    - [CONCLUSION](#conclusion)
+    - [Conclusion](#conclusion)
     - [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
 
 
