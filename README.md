@@ -30,10 +30,8 @@ Bayesian and RL theories are derived from different, but not exclusive, assumpti
 However, these two theoretical models can be brought together in the form of the **Kalman-TD Model**. 
 
 
+<img src="https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG" alt="alt text" width="186.8" height="123.2">
  
-![alt text](https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG "Figure 1: Organizing Bayesian and reinforcement learning theories.")
-
-
 
 
 
