@@ -20,6 +20,10 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 ## What is the Kalman Filter 
 
 
+ 
+![alt text](https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG "Figure 1: Organizing Bayesian and reinforcement learning theories.")
+
+
 
 
 
