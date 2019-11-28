@@ -7,14 +7,25 @@ The initial code in Matlab is based on the previous work of Sam Gershman, at the
 
 For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
-## What is the Kalman Filter? 
+
+**Table of Contents**
+
+- [Kalman-Filter Rescorla-Wagner Model](#Kalman-Filter)
+    - [What is the Kalman Filter?](#What-is-the-Kalman-Filter)
+    - [CONCLUSION](#conclusion)
+    - [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
+
+
+
+## What is the Kalman Filter 
 
 
 
 
 
+## Conclusion 
 
-## Programming for Brain and Cognitive Sciences. 
+## Programming for Brain and Cognitive Sciences
 
 This code was part of the course PBCS from the Cogmaster at the ENS (Paris, France). 
 
