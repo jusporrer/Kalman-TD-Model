@@ -10,10 +10,10 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 ### Table of Contents
 
-- [Kalman-Filter Rescorla-Wagner Model](#Kalman-Filter)
-    - [What is the Kalman Filter?](#What-is-the-Kalman-Filter)
-    - [Conclusion](#conclusion)
-    - [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
+1. [Kalman-Filter Rescorla-Wagner Model](#Kalman-Filter)
+    1. [What is the Kalman Filter?](#What-is-the-Kalman-Filter)
+    1. [Conclusion](#conclusion)
+    1. [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
 
 
 
