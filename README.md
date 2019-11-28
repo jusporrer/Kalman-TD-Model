@@ -19,6 +19,13 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 ## What is the Kalman Filter 
 
+### Associative Learning 
+
+The ability to learn is essential to the survival of animals. Two recent concepts have allowed us to have a better understanding of how this learning is occurring. 
+- An agent estimates the strength of associations and tracks its uncertainty using **Bayesian principles**. 
+- An agent learns about long-term cumulative future reward using **Reinforcement Learning principles**. 
+
+Bayesian and RL theories are derived from different (but not mutually exclusive) assumptions about the nature of the learning task (e.g. target, representation of uncertainty). 
 
  
 ![alt text](https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG "Figure 1: Organizing Bayesian and reinforcement learning theories.")
