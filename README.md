@@ -8,7 +8,7 @@ The initial code in Matlab is based on the previous work of Sam Gershman, at the
 For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 
-**Table of Contents**
+### Table of Contents
 
 - [Kalman-Filter Rescorla-Wagner Model](#Kalman-Filter)
     - [What is the Kalman Filter?](#What-is-the-Kalman-Filter)
