@@ -10,7 +10,7 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 ### Table of Contents
 
-1. [Kalman-TD Model](#Kalman-TD Model)
+1. [Kalman-TD Model](#Kalman-TD-Model)
     1. [What is the Kalman-TD Model?](#What-is-the-Kalman-TD-Model-?)
         1. [Associative Learning](#Associative-Learning)
     1. [Conclusion](#Conclusion)
