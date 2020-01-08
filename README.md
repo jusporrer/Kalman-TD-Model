@@ -1,4 +1,4 @@
-[Kalman-TD Filter](https://jusporrer.github.io/PCBS-Kalman-Filter/)
+[Kalman-TD Model](https://jusporrer.github.io/PCBS-Kalman-Filter/)
 ================
 
 This program in Python allows to fit the **Kalman-TD Model** to behavioral data.
@@ -10,14 +10,15 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 ### Table of Contents
 
-1. [Kalman-Filter Rescorla-Wagner Model](#Kalman-Filter)
-    1. [What is the Kalman Filter?](#What-is-the-Kalman-Filter-?)
+1. [Kalman-TD Model](#Kalman-TD Model)
+    1. [What is the Kalman-TD Model?](#What-is-the-Kalman-TD-Model-?)
+        1. [Associative Learning](#Associative-Learning)
     1. [Conclusion](#Conclusion)
     1. [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
 
 
 
-## What are the two main learning theories? 
+## What is the Kalman-TD Model?
 
 ### Associative Learning 
 
