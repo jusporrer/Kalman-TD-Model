@@ -10,9 +10,10 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 
 ### Table of Contents
 
-1. [Kalman-TD Model](#Kalman-TD-Model)
-    1. [What is the Kalman-TD Model?](#What-is-the-Kalman-TD-Model-?)
+1. [Kalman-TD Model](#Kalman---TD-Model)
+    1. [What is the Kalman-TD Model?](#What-is-the-Kalman---TD-Model-?)
         1. [Associative Learning](#Associative-Learning)
+        1. [Unifying Model](#Unifying-Model)  
     1. [Conclusion](#Conclusion)
     1. [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
 
@@ -28,12 +29,14 @@ The ability to learn is essential to the survival of animals. Two recent concept
 
 Bayesian and RL theories are derived from different, but not exclusive, assumptions about the target and uncertainty representation of the learning task. The Kalman-filter learns the posterior distribution of expected immediate reward in contrast to the TD that learns a single value of expected future reward.   
 
+<img src="https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG" alt="alt text" width="186.8" height="123.2">
+
 ### Unifying Model 
 
 These two theoretical models can be brought together in the form of the **Kalman-TD Model** and be constructed as a point estimator (TD) of expected immediate reward (Kalman). 
 
 
-<img src="https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG" alt="alt text" width="186.8" height="123.2">
+
  
 
 
