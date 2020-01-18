@@ -10,10 +10,6 @@ import sys
 import os
 import numpy as np
 
-# -----------------------------------
-# FONCTIONS
-# -----------------------------------
-
 def create_stimulus(onset, duration, trial_length):
 
     x = np.zeros((trial_length), dtype = np.int)
@@ -22,27 +18,17 @@ def create_stimulus(onset, duration, trial_length):
         x[onset:(onset + duration)] = 1
         return x
 
-#x2 = np.zeros((10,4)) #nb of lines then nb of coloms
-#x2[:,3] = create_stimulus(4,5,10)
-#print(x2)
+def construct_matrix(x, trial_length, nb_stimuli):
+    
+    matrix = np.zeros((trial_length,nb_stimuli*10), dtype = np.int)
 
+    start=0
+    finish=1
+    for i in range(nb_stimuli):
 
-def construct_matrix(x):
-    x_nb_columns = np.size(x,1)
-    m = []
+        matrix[::,start*trial_length:finish*trial_length] = np.diag(x[:,i])
 
-    for i in range(0, x_nb_columns):
-        m = np.append(m,(np.diag(x[:,i])))
-
-    matrix = np.asmatrix(m)
-    matrix = np.reshape(m,(10,40),order='F')
+        start += 1
+        finish += 1
 
     return matrix
-
-#M = construct_matrix(x2)
-#print(M)
-#print(np.size(M,0))
-#print(np.size(M,1))
-
-#(covariance_matrix,reward)
-#Kalman_TD_stimulation_serial_overshadowing()
