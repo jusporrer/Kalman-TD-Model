@@ -49,7 +49,7 @@ This code was part of the course PBCS from the Cogmaster at the ENS (Paris, Fran
 
 ### Differences between Python and Matlab 
 
-Sam Gersham made available his codes written in Matlab which allowed me to have a better understanding of the mathematics behind the model. Even if Matlab and Python are simialar, the transition from one to the other is made difficult by a few major differences. Amongst those, zero-based indexing is easily ajusted for but the lack of true forms of matrices in Python and the data ordering of arrays which is row-major compared to column-major in Matlab requires more adjustements. 
+Sam Gersham made available his codes written in Matlab which allowed me to have a better understanding of the mathematics behind the model. Even if Matlab and Python are similar, the transition from one to the other is made difficult by a few major differences. Amongst those, zero-based indexing is easily ajusted for but the lack of true forms of matrices in Python and the data ordering of arrays which is row-major compared to column-major in Matlab requires more adjustements. 
 
 ### Previous Experience in Coding 
 
