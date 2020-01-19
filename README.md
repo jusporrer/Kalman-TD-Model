@@ -1,7 +1,7 @@
 [Kalman-TD Model](https://jusporrer.github.io/PCBS-Kalman-Filter/)
 ================
 
-This program in Python allows to fit the **Kalman-TD Model** to behavioural data.
+This program in Python allows the **Kalman-TD Model** to fit simulated behavioural data.
 
 The initial code in Matlab is based on the previous work of **Samuel Gershman**, at the Department of Psychology and Center for Brain Science, Harvard University [(See his GitHub here)](https://github.com/sjgershm/KF-learning). This model is introduced in his paper [*A Unifying Probabilistic View of Associative Learning*](https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1004567&type=printable) which describes a framework encompassing Bayesian and Reinforcement Learning theories of associative learning.
 
@@ -32,9 +32,9 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 The ability to learn is essential to the survival of animals. Two recent concepts have allowed us to have a better understanding of how this learning is occurring.
 Both theories can be seen as a generalisation of the seminal Rescorla-Wagner but are derived from different assumptions about the target and uncertainty representation of the learning task.
 - An agent estimates the strength of associations and tracks its uncertainty using **Bayesian principles** and embodied by the **Kalman Filter (KF)**.
- - KF learns the *posterior distribution* of expected *immediate* reward
+> KF learns the *posterior distribution* of expected *immediate* reward
 - An agent learns about long-term cumulative future reward using **Reinforcement Learning (RL) principles** and represented by **Temporal Difference (TD)**.
- - TD learns a *single value* of expected *future* cumulative reward
+> TD learns a *single value* of expected *future* cumulative reward
 
 <img src="https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG" alt="alt text" width="186.8" height="123.2">
 
@@ -42,10 +42,22 @@ Both theories can be seen as a generalisation of the seminal Rescorla-Wagner but
 
 These two theoretical models can be brought together in the form of the **Kalman-TD Model**. This real-time model represent a distribution over weights rather than a point estimate.
 
-This is consistent with a more normative approach as we can believe that an ideal agent should  be able to track its uncertainty using Bayesian Principles and learn about long-term (rather than just immediate) reward.
+This is consistent with a more normative approach as we can believe that an ideal agent should be able to track its uncertainty using Bayesian Principles and learn about long-term (rather than just immediate) reward.
 
 
 # How is the Kalman TD Model Build?
+The Kalman-TD allows the agent to track the entire distribution over discounted future returns by combining the KF and the TD. More precisely, the learner represents uncertainty in the form of a posterior distribution over hypotheses given data according to the Bayes’ rule. This posterior Gaussian distribution has a mean Wn (weight at time n) and covariance matrix ∑n.
+-	The weight is updated through the Kalman Gain (equivalent of learning rate) and the traditional prediction error delta.
+> `Wn+1 = Wn + Kn*δn`
+
+-	The covariance matrix is updated through two factors: increasing uncertainty over time due to gaussian random diffusion (represented by tau square) and decreasing uncertainty when observing data (expressed by the term with the Kalman gain).
+> `∑n+1 = ∑n + τ²I - Kn*Xn.transpose*(∑n + τ²I)`
+
+-	The Kalman Gain is stimulus-specific, dynamic and grows with the uncertainty encoded in the diagonals of the posterior covariance matrix.
+> `Kn = ((∑n + τ²I)*Xn)/(Xn.transpose*(∑n + τ²I)*Xn + σ²r)`
+
+In sum, the Kalman-TD mainly relies on the KF with the stimulus features being replaced by their discounted time derivate:
+> `Ht = γ * Xt+1 - Xt`
 
 # How to Test the Superiority of the Kalman TD Model?
 Even though the KF and TD can each explain well some violations of associative learning that the seminal Rescorla-Wagner model cannot account for (i.e. latent inhibition), some instances require the combination of both models to fit the behavioural data.  
@@ -65,9 +77,9 @@ In particular, Shevill & Hall (2004) looked at the effect of extinguishing the s
 | A -> X -> +                     | A -> -                         | X -> ?                          |
 | B -> Y -> +                     |                                | Y -> ?                          |
 
-In a serial overshadowing procedure, the second-order stimulus (i.e. A) overshadows the first-order stimulus (i.e. X). Extinguishing the second-order stimulus (i.e. by not reinforcing it)  thus causes recovery from overshadowing. The behavioural results showed that the stimulus X has a higher value than the stimulus Y whose associated second-order stimulus (i.e. B) has not be extinguished.
+In a **serial overshadowing** procedure, the second-order stimulus (i.e. A) overshadows the first-order stimulus (i.e. X). Extinguishing the second-order stimulus (i.e. by not reinforcing it)  thus causes recovery from overshadowing. The behavioural results showed that the **stimulus X has a higher value than the stimulus Y** whose associated second-order stimulus (i.e. B) has not be extinguished.
 
-We expect that the Kalman TD model predicts well these results compared to the standard TD.
+We expect that the **Kalman TD model predicts well these results** compared to the standard TD.
 Only the Kalman TD model learns that cue weights must sum to 1 (i.e. value of the reward) and is encoded as negative covariance between weights. This implies that post-training inflation or deflation of one stimulus will cause changes in beliefs about the other stimulus, which is not possible in TD as it does not measure covariance.
 
 # How to Simulate the Kalman TD Model?
@@ -281,7 +293,7 @@ def standard_TD(self, covariance_matrix, reward_matrix):
 ## Plot the Results
 As mentioned earlier, we expect that as compared to the standard TD, the Kalman TD model predicts well the behavioural results in which the value of the stimulus X is higher than the stimuli Y as its respective second-order stimuli (i.e. A) has been extinguished.
 
-Therefore, after launching our simulation in the main file *run.py*, we plot the results using simple bars.
+Therefore, after launching our simulation in the main file *run.py*, we plot the results using simple bars which is saved as a pdf file.
 
 ```
 #launching simulation
@@ -317,11 +329,10 @@ fig1.savefig('fig_simulation_KalmanTD.pdf', bbox_inches='tight')
 ```
 The *run.py* file is also the one in which all the parameters are set. Thus, it is easily possible to generate new simulations with different parameters.
 
-
 # Conclusion
 
-I am very happy about this project as it allowed me to understand better seminal models used very frequently in computational Neuroscience.
-Even though I had accessed to the original codes, sole replication using MATLAB was already challenging due to a few bugs. However, they brought me a better understanding on how to build a model and the mathematics behind it. Utilising the object-oriented features of Python, I changed the structure and made it more optimised in my opinion. I tried to write it in such a way to be able to include other stimulation utilising different stimuli association.   
+I am very happy about this project as it allowed me to understand better seminal models used very frequently in Computational Neuroscience.
+Even though I had access to the original codes, sole replication using MATLAB was already challenging due to a few bugs. However, they brought me a better understanding of how to build a model and the mathematics behind it. Utilising the object-oriented features of Python, I changed the structure and optimised it. Finally, I tried to write it in such a way to be able to include other stimulations utilising different stimuli associations.   
 
 
 ## Programming for Brain and Cognitive Sciences
@@ -332,11 +343,10 @@ This code was part of the course PBCS from the Cogmaster at the ENS (Paris, Fran
 
 I had previous experience in coding using JavaScript, HTML and CSS. I also used MATLAB to analyse my data. However, these skills were self-thought, so I never learned how to optimise and write a clean code.
 
-Through this course, I gained proficiency using Python, which is a language I never programmed in before. This is especially useful as nowadays, more and more Cognitive Neuroscience lab use Python to code their experiments and analyse their data.
+Through this course, I gained proficiency using Python, which is a language I never programmed in before. This is especially useful as nowadays, more and more Cognitive Neuroscience labs use Python to code their experiments and analyse their data.
 
-It also encouraged me to use more GitHub to organise my code (especially through literate programming), and to allow more reproducible science. It also opened my eyes on the benefits of open source.
+It also encouraged me to use more GitHub to organise my code (especially through literate programming), and to allow more reproducible science. It also opened my eyes to the benefits of open source.
 
 ### Feedback
 
-Nonetheless, I still wish that we would have been able to do more languages (I know it is difficult to implement Matlab, but the reality is still that most labs are using it). I also wish that we would have been able to learn more optimisation of our codes rather than the coding of experiment itself.
-Finally, even though it is great to have a wide variety of levels, I think that it can results in frustration in both those with lower levels and those with strong coding abilities. Two classes with different levels would benefit most of the students. 
+Nonetheless, I still wish that we would have been able to do more languages (I know it is difficult to implement Matlab, but the reality is still that most labs are using it). I also wish that we would have been able to learn more optimisation of our codes rather than coding the experiment itself.
