@@ -58,7 +58,7 @@ Overshadowing results from reinforcing the compound (i.e. AB -> +) which leads t
 The KF can account for this phenomenon only when the compound is presented simultaneously but not serially as it does not allow within-trial representation.  
 
 ## Behavioural Example (Shevill & Hall, 2004)
-In particular, Shevill & Hall (2004) look at the effect of extinguishing the second-order stimulus Z on the responding to the first order stimulus.
+In particular, Shevill & Hall (2004) looked at the effect of extinguishing the second-order stimulus A on the responding to the first order stimulus.
 
 | Phase 1                         | Phase 2                        | Test                            |
 | :------------------------------:|:------------------------------:| :------------------------------:|
@@ -205,9 +205,7 @@ def construct_covariance_matrix(stimuli, trial_length, nb_stimuli):
 ```
 
 ## Build the Models
-The Kalman TD and the standard TD models are build in the same method called *Kalman_TD* which is in the same file as our main class (i.e. *KalmanTD_model.py*).
-
-I wish I could have reduced the size of this function but I do not know if it would have made much sense to break it down or to convert it into a class. Furthermore, I could have also wrote two different methods for the Kalman TD and the standard TD but they are quite similar (only the TD does not use the covariance, Kalman Gain, ...), so it would have been quite repetitive.
+The Kalman TD and the standard TD models are built in the same method called *Kalman_TD* which is in the same file as our main class (i.e. *KalmanTD_model.py*).
 
 
 ```
@@ -322,22 +320,23 @@ The *run.py* file is also the one in which all the parameters are set. Thus, it 
 
 # Conclusion
 
+I am very happy about this project as it allowed me to understand better seminal models used very frequently in computational Neuroscience.
+Even though I had accessed to the original codes, sole replication using MATLAB was already challenging due to a few bugs. However, they brought me a better understanding on how to build a model and the mathematics behind it. Utilising the object-oriented features of Python, I changed the structure and made it more optimised in my opinion. I tried to write it in such a way to be able to include other stimulation utilising different stimuli association.   
+
+
 ## Programming for Brain and Cognitive Sciences
 
 This code was part of the course PBCS from the Cogmaster at the ENS (Paris, France).
-
-## Differences between Python and Matlab
-
-Sam Gersham made available his codes written in Matlab which allowed me to have a better understanding of the mathematics behind the model. Even if Matlab and Python are similar, the transition from one to the other is made difficult by a few major differences. Amongst those, zero-based indexing is easily ajusted for but the lack of true forms of matrices in Python and the data ordering of arrays which is row-major compared to column-major in Matlab requires more adjustements.
 
 ### Previous Experience in Coding
 
 I had previous experience in coding using JavaScript, HTML and CSS. I also used MATLAB to analyse my data. However, these skills were self-thought, so I never learned how to optimise and write a clean code.
 
-I think that through this course I gained proficiency using Python, which is a language I never programmed in before. This is especially useful as nowadays, more and more Cognitive Neuroscience lab use Python to code their experiments and analyse their data.
+Through this course, I gained proficiency using Python, which is a language I never programmed in before. This is especially useful as nowadays, more and more Cognitive Neuroscience lab use Python to code their experiments and analyse their data.
 
-It also encouraged me to use more GitHub to organise my code (especially through literate programming of which I am now a fan), and to allow more reproducible science. It also opened my eyes on the benefits of open source, and I am considering switching to Linux.
+It also encouraged me to use more GitHub to organise my code (especially through literate programming), and to allow more reproducible science. It also opened my eyes on the benefits of open source.
 
 ### Feedback
 
-Nonetheless, I still wish that we would have been able to do more language (I know it is difficult to implement MATLAB, but the reality is still that most labs are using it). I also wish that we would have been able to learn more optimisation of our codes rather than the coding of experiment itself. Even though it is great to have a wide variety of levels, I think that it can results in frustration in both those with lower levels and those with strong coding abilities. Two classes with different levels would benefit most of the students.
+Nonetheless, I still wish that we would have been able to do more languages (I know it is difficult to implement Matlab, but the reality is still that most labs are using it). I also wish that we would have been able to learn more optimisation of our codes rather than the coding of experiment itself.
+Finally, even though it is great to have a wide variety of levels, I think that it can results in frustration in both those with lower levels and those with strong coding abilities. Two classes with different levels would benefit most of the students. 
