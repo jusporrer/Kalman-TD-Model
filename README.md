@@ -1,4 +1,4 @@
-[Kalman-TD Model](https://jusporrer.github.io/PCBS-Kalman-Filter/)
+[Kalman-TD Model](https://jusporrer.github.io/PCBS-Kalman-TD-Model/)
 ================
 
 This program in Python allows the **Kalman-TD Model** to fit simulated behavioural data.
