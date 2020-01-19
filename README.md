@@ -162,7 +162,7 @@ def initialise_covariance_matrix(self, stimuli_1, stimuli_2, stimuli_3):
 
 ```
 
-The same is effectuated for the reward matrices (through the method *initialise_reward_matrix()* of the same class than before). 
+The same is effectuated for the reward matrices (through the method *initialise_reward_matrix()* of the same class than before).
 
 ```
 def initialise_reward_matrix(self, stimuli_1, stimuli_2, stimuli_3):
@@ -184,9 +184,140 @@ def initialise_reward_matrix(self, stimuli_1, stimuli_2, stimuli_3):
  return reward_matrix
 ```
 
+You may have noticed that the covariance matrices were created using the function *construct_covariance_matrix()* from the file *functions.py*. I decided to pre-allocate the matrix before the loop iteration to improve processing speed as growing an array by assignment can be costly.
+
+```
+def construct_covariance_matrix(stimuli, trial_length, nb_stimuli):
+
+    covariance_matrix = np.zeros((trial_length,nb_stimuli*10), dtype = np.int)
+
+    start=0
+    finish=1
+    for i in range(nb_stimuli):
+
+        covariance_matrix[::,start*trial_length:finish*trial_length] = np.diag(stimuli[:,i])
+
+        start += 1
+        finish += 1
+
+    return covariance_matrix
+
+```
+
 ## Build the Models
+The Kalman TD and the standard TD models are build in the same method called *Kalman_TD* which is in the same file as our main class (i.e. *KalmanTD_model.py*).
+
+I wish I could have reduced the size of this function but I do not know if it would have made much sense to break it down or to convert it into a class. Furthermore, I could have also wrote two different methods for the Kalman TD and the standard TD but they are quite similar (only the TD does not use the covariance, Kalman Gain, ...), so it would have been quite repetitive.
+
+
+```
+
+def Kalman_TD(covariance_matrix, reward_matrix, nb_stimuli, trial_length, TD, covariance, diffusion_variance, discount_factor, noise_variance, learning_rate):
+    matrix_nb_columns = np.size(covariance_matrix,1)
+    matrix_nb_rows = np.size(covariance_matrix,0)
+
+    covariance_matrix = np.asmatrix(np.concatenate((covariance_matrix, np.zeros( (1,(nb_stimuli * trial_length)))), axis=0)) #adds buffer
+
+    weights = np.asmatrix(np.zeros((matrix_nb_columns,1)))
+    weights_matrix = np.asmatrix(np.zeros((matrix_nb_rows,matrix_nb_columns)))
+
+    covariance = covariance*np.eye(matrix_nb_columns)
+    diffusion_variance = diffusion_variance*np.eye(matrix_nb_columns)
+
+    for i in range(matrix_nb_rows):
+
+        values = covariance_matrix[i,:]*weights
+
+        weights_matrix[i,::] = weights.flatten()
+
+        temporal_difference = covariance_matrix[i,:] - discount_factor*covariance_matrix[i+1,:]
+
+        rhat = temporal_difference*weights
+
+        prediction_error = reward_matrix[0,i] - rhat
+
+        covariance = covariance + diffusion_variance
+
+        residual_covariance = temporal_difference*covariance*temporal_difference.transpose() + noise_variance
+
+        kalman_gain = covariance*temporal_difference.transpose() / residual_covariance
+
+        if TD == 1:
+            weights = weights + learning_rate*temporal_difference.transpose()*prediction_error
+        else:
+            weights = weights + kalman_gain*prediction_error
+
+        covariance = covariance - kalman_gain*temporal_difference*covariance
+
+    return weights_matrix
+```
+
+This function is then called by the class *serial_overshadowing_simulation()* under the methods *Kalman_TD()* and *standard_TD()*. The weight matrix is sliced in such a way to only obtain the values of the stimuli X and Y.  
+
+```
+def Kalman_TD(self, covariance_matrix, reward_matrix):
+ """
+ Creates the Kalman-TD weight matrix for second-order stimulus extinction simulation.
+ """
+ weights_matrix_kalmanTD = Kalman_TD(covariance_matrix, reward_matrix, self.nb_stimuli, self.trial_length, 0, self.covariance, self.diffusion_variance, self.discount_factor, self.noise_variance, self.learning_rate)
+
+ weights_kalmanTD = weights_matrix_kalmanTD[self.onset2::self.trial_length, (self.trial_length + self.onset2)]
+ weights_kalmanTD = np.concatenate((weights_kalmanTD, weights_matrix_kalmanTD[self.onset2::self.trial_length, ((self.nb_stimuli-1)*self.trial_length + self.onset2)]), axis=1)
+
+ return weights_kalmanTD
+
+def standard_TD(self, covariance_matrix, reward_matrix):
+ """
+ Creates the standard-TD weight matrix for second-order stimulus extinction simulation.
+ """
+
+ weights_matrix_TD = Kalman_TD(covariance_matrix, reward_matrix, self.nb_stimuli, self.trial_length, 1, self.covariance, self.diffusion_variance, self.discount_factor, self.noise_variance, self.learning_rate)
+
+ weights_TD = weights_matrix_TD[self.onset2::self.trial_length, (self.trial_length + self.onset2)]
+ weights_TD = np.concatenate((weights_TD, weights_matrix_TD[self.onset2::self.trial_length, ((self.nb_stimuli-1)*self.trial_length + self.onset2)]), axis=1)
+
+ return weights_TD
+
+```
 
 ## Plot the Results
+As mentioned earlier, we expect that as compared to the standard TD, the Kalman TD model predicts well the behavioural results in which the value of the stimulus X is higher than the stimuli Y as its respective second-order stimuli (i.e. A) has been extinguished.
+
+Therefore, after launching our simulation in the main file *run.py*, we plot the results using simple bars.
+
+```
+#launching simulation
+second_order_extinction = serial_overshadowing_simulation(nb_stimuli, nb_trials, trial_length, onset1, onset2, duration, covariance, noise_variance, diffusion_variance, discount_factor, trace_decay, learning_rate)
+[stimuli_1, stimuli_2, stimuli_3] = second_order_extinction.initialise_stimuli()
+covariance_matrix = second_order_extinction.initialise_covariance_matrix(stimuli_1, stimuli_2, stimuli_3)
+reward_matrix = second_order_extinction.initialise_reward_matrix(stimuli_1, stimuli_2, stimuli_3)
+weights_kalmanTD = second_order_extinction.Kalman_TD(covariance_matrix, reward_matrix)
+weights_TD = second_order_extinction.standard_TD(covariance_matrix, reward_matrix)
+weights = [[weights_kalmanTD[-1,0],weights_kalmanTD[-1,1]], [weights_TD[-1,0], weights_TD[-1,1]]]
+
+labels = ["Stimulus X", "Stimulus Y"]
+title = ['Kalman TD Model', 'Standard TD Model']
+nb_plot = [121, 122]
+color = [(0.5, 0.7, 0.8), (0.8, 0.6, 0.7)]
+
+x = np.arange(len(labels))
+fig1 = figure(figsize = (15,9))
+fig1.suptitle('Simulation: Recovery from Serial Compound Overshadowing after Second-Order Stimulus Extinction', fontsize=20)
+
+for i in range(2):
+    plt.subplot(nb_plot[i])
+    plt.grid(linestyle=':', linewidth='0.9')
+    plt.bar(x,weights[i], align='center', alpha=0.8, color=color[i], edgecolor=(0.5,0.5,0.5))
+    plt.xticks(x, labels, fontsize=14)
+    plt.ylabel('Value of (weight)', fontsize=14)
+    plt.title(title[i], fontsize=16)
+    plt.ylim(0,0.5)
+
+plt.show()
+fig1.savefig('fig_simulation_KalmanTD.pdf', bbox_inches='tight')
+
+```
+The *run.py* file is also the one in which all the parameters are set. Thus, it is easily possible to generate new simulations with different parameters.
 
 
 # Conclusion
