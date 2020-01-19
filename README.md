@@ -32,9 +32,9 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 The ability to learn is essential to the survival of animals. Two recent concepts have allowed us to have a better understanding of how this learning is occurring.
 Both theories can be seen as a generalisation of the seminal Rescorla-Wagner but are derived from different assumptions about the target and uncertainty representation of the learning task.
 - An agent estimates the strength of associations and tracks its uncertainty using **Bayesian principles** and embodied by the **Kalman Filter (KF)**.
-      - KF learns the *posterior distribution* of expected *immediate* reward
+ - KF learns the *posterior distribution* of expected *immediate* reward
 - An agent learns about long-term cumulative future reward using **Reinforcement Learning (RL) principles** and represented by **Temporal Difference (TD)**.
-      - TD learns a *single value* of expected *future* cumulative reward
+ - TD learns a *single value* of expected *future* cumulative reward
 
 <img src="https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG" alt="alt text" width="186.8" height="123.2">
 
@@ -65,24 +65,124 @@ In particular, Shevill & Hall (2004) look at the effect of extinguishing the sec
 | A -> X -> +                     | A -> -                         | X -> ?                          |
 | B -> Y -> +                     |                                | Y -> ?                          |
 
-In a serial overshadowing procedure, the second-order stimulus (i.e. A) overshadows the first-order stimulus (i.e. X). Extinguishing the second-order stimulus (i.e. by not reinforcing it)  thus causes recovery from overshadowing. The behavioural results show higher value of the stimulus X relative to the stimulus Y whose associated second-order stimulus (i.e. B) had not be extinguished.
+In a serial overshadowing procedure, the second-order stimulus (i.e. A) overshadows the first-order stimulus (i.e. X). Extinguishing the second-order stimulus (i.e. by not reinforcing it)  thus causes recovery from overshadowing. The behavioural results showed that the stimulus X has a higher value than the stimulus Y whose associated second-order stimulus (i.e. B) has not be extinguished.
 
-We expect that the Kalman TD model predicts well these results compared to the standard TD. 
-Only the Kalman TD model learns that cue weights must sum to 1 (i.e. value of the reward) and is encoded as negative covariance between weights. This implies that post-training inflation or deflation of one stimulus will cause changes in beliefs about the other stimulus, which is not possible in TD as it does not measure covariance. 
-
-
-
-
-
-
-
-
+We expect that the Kalman TD model predicts well these results compared to the standard TD.
+Only the Kalman TD model learns that cue weights must sum to 1 (i.e. value of the reward) and is encoded as negative covariance between weights. This implies that post-training inflation or deflation of one stimulus will cause changes in beliefs about the other stimulus, which is not possible in TD as it does not measure covariance.
 
 # How to Simulate the Kalman TD Model?
 
 ## Create the Stimuli
+First, we need to create the stimuli (i.e. conditioned stimuli) and their associated reward (i.e. unconditioned stimulus). For this we create a small function in the *functions.py* file.
+The *onset* determines when the reward starts and *duration* for how long.
+
+```
+import numpy as np
+
+def create_stimuli(onset, duration, trial_length):
+
+    stimuli = np.zeros((trial_length), dtype = np.int)
+
+    if onset >= 0:
+        stimuli[onset:(onset + duration)] = 1
+        return stimuli
+```
+
+The function *create_stimuli()* is called from our main class called *serial_overshadowing_simulation()* in the *KalmanTD_model.py* file. The class is first initialised with all the parameters needed for the creation of the stimuli and later on for the model.
+Then, the method *initialise_stimuli()* creates the three component of our simulation. Stimuli_1 being the serial compound (A -> X -> +), Stimuli_2 being the serial compound (B -> Y -> +) and finally Stimuli_3 being the extinguished second-order stimuli A.
+
+
+```
+
+class serial_overshadowing_simulation():
+    """ Simulates the recovery from serial compound overshadowing (with second-order extinction)
+            First, creates stimuli.
+            Second, creates covariance and reward matrices.
+            Third, applies Kalman-TD and standard-TD models.
+    """
+
+    def __init__(self, nb_stimuli, nb_trials, trial_length, onset1, onset2, duration, covariance, noise_variance, diffusion_variance, discount_factor, trace_decay, learning_rate):
+        self.nb_stimuli = nb_stimuli
+        self.nb_trials = nb_trials
+        self.trial_length = trial_length
+        self.onset1 = onset1
+        self.onset2 = onset2
+        self.duration = duration
+        self.covariance = covariance
+        self.noise_variance = noise_variance
+        self.diffusion_variance = diffusion_variance
+        self.discount_factor = discount_factor
+        self.trace_decay = trace_decay
+        self.learning_rate = learning_rate
+
+    def initialise_stimuli(self):
+        """
+        Creates the stimulus presented together (or alone) with second-order stimulus extinction.
+        """
+        # A -> X -> +
+        stimuli_1 = np.zeros((self.trial_length, self.nb_stimuli),dtype = np.int)
+        stimuli_1[:,0] = create_stimuli(self.onset1, self.duration, self.trial_length)
+        stimuli_1[:,1] = create_stimuli(self.onset2, self.duration, self.trial_length)
+
+        # B -> Y -> +
+        stimuli_2 = np.zeros((self.trial_length, self.nb_stimuli), dtype = np.int)
+        stimuli_2[:,2] = create_stimuli(self.onset1, self.duration, self.trial_length)
+        stimuli_2[:,3] = create_stimuli(self.onset2, self.duration, self.trial_length)
+
+        # A -> -
+        stimuli_3 = np.zeros((self.trial_length, self.nb_stimuli),dtype = np.int)
+        stimuli_3[:,0] = create_stimuli(self.onset1, self.duration, self.trial_length)
+
+        return stimuli_1, stimuli_2, stimuli_3
+
+```
 
 ## Create the Matrices
+With these associations of stimuli with their reward, we need to create their respective covariance matrix. They are then added together to create a general covariance of the entire experiment (through the method *initialise_covariance_matrix()* of the same class than before).
+
+```
+def initialise_covariance_matrix(self, stimuli_1, stimuli_2, stimuli_3):
+ """
+ Creates the covariance matrix for each stimulus presented together (or alone) with second-order stimulus extinction.
+ """
+ # A -> X -> +
+ matrix_stimuli_1 = construct_covariance_matrix(stimuli_1, self.trial_length, self.nb_stimuli)
+
+ # B -> Y -> +
+ matrix_stimuli_2 = construct_covariance_matrix(stimuli_2, self.trial_length, self.nb_stimuli)
+
+ # A -> -
+ matrix_stimuli_3 = construct_covariance_matrix(stimuli_3, self.trial_length, self.nb_stimuli)
+
+ # All the stimuli
+ covariance_matrix = np.concatenate((np.matlib.repmat( (matrix_stimuli_1), self.nb_trials, 1), np.matlib.repmat( (matrix_stimuli_2), self.nb_trials, 1)))
+ covariance_matrix = np.concatenate((covariance_matrix, np.matlib.repmat( (matrix_stimuli_3), self.nb_trials, 1)))
+
+ return covariance_matrix
+
+```
+
+The same is effectuated for the reward matrices (through the method *initialise_reward_matrix()* of the same class than before). 
+
+```
+def initialise_reward_matrix(self, stimuli_1, stimuli_2, stimuli_3):
+ """
+ Creates the reward matrix for each stimulus presented together (or alone) with second-order stimulus extinction.
+ """
+ # A -> X -> +
+ reward_stimuli_1 = create_stimuli((self.onset2 + self.duration - 1), 1, self.trial_length)
+
+ # B -> Y -> +
+ reward_stimuli_2 = create_stimuli((self.onset2 + self.duration - 1), 1, self.trial_length)
+
+ # A -> -
+ reward_stimuli_3 = np.zeros((self.trial_length), dtype = np.int)
+
+ # All the stimuli
+ reward_matrix = np.asmatrix( np.append( np.matlib.repmat( (reward_stimuli_1, reward_stimuli_2), self.nb_trials, 1), np.matlib.repmat(reward_stimuli_3, self.nb_trials, 1)))
+
+ return reward_matrix
+```
 
 ## Build the Models
 
