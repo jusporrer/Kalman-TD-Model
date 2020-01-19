@@ -13,7 +13,7 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
 1. [What is the Kalman TD Model?](#What-is-the-Kalman-TD-Model-?)
       1. [Associative Learning Theories](#Associative-Learning-Theories)
       1. [Unifying Model](#Unifying-Model)  
-1. [How is the Kalman TD Model Build?](#How-is-the-Kalman-TD-Model-Build?)
+1. [How is the Kalman TD Model Build?](#How-is-the-Kalman-TD-Model-Build-?)
 1. [How to Test the Superiority of the Kalman TD Model?](#How-to-Test-the-Superiority-of-the-Kalman-TD-Model-?)
       1. [Recovery from Serial Compound Overshadowing](#Recovery-from-Serial-Compound-Overshadowing)
 1. [How to Simulate the Kalman TD Model?](#How-to-Simulate-the-Kalman-TD-Model-?)
@@ -22,7 +22,7 @@ For more information please contact me at <juliana.sporrer.18@ucl.ac.uk>.
       1. [Build the Models](#Build-the-Models)
       1. [Plot the Results](#Plot-the-Results)
 1. [Conclusion](#Conclusion)
-1. [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
+      1. [PBCS Feedback](#Programming-for-Brain-and-Cognitive-Sciences)
 
 
 # What is the Kalman-TD Model?
@@ -44,7 +44,7 @@ These two theoretical models can be brought together in the form of the **Kalman
 This is consistent with a more normative approach as we can believe that an ideal agent should be able to track its uncertainty using Bayesian Principles and learn about long-term (rather than just immediate) reward.
 
 
-# How is the Kalman TD Model Build?
+# How is the Kalman TD Model Build ?
 The Kalman-TD allows the agent to track the entire distribution over discounted future returns by combining the KF and the TD. More precisely, the learner represents uncertainty in the form of a posterior distribution over hypotheses given data according to the Bayes’ rule. This posterior Gaussian distribution has a mean Wn (weight at time n) and covariance matrix ∑n.
 -	The weight is updated through the Kalman Gain (equivalent of learning rate) and the traditional prediction error delta.
 > `Wn+1 = Wn + Kn*δn`
@@ -58,7 +58,7 @@ The Kalman-TD allows the agent to track the entire distribution over discounted 
 In sum, the Kalman-TD mainly relies on the KF with the stimulus features being replaced by their discounted time derivate:
 > `Ht = γ * Xt+1 - Xt`
 
-# How to Test the Superiority of the Kalman TD Model?
+# How to Test the Superiority of the Kalman TD Model ?
 Even though the KF and TD can each explain well some violations of associative learning that the seminal Rescorla-Wagner model cannot account for (i.e. latent inhibition), some instances require the combination of both models to fit the behavioural data.  
 
 ## Recovery from Serial Compound Overshadowing
@@ -81,7 +81,7 @@ In a **serial overshadowing** procedure, the second-order stimulus (i.e. A) over
 We expect that the **Kalman TD model predicts well these results** compared to the standard TD.
 Only the Kalman TD model learns that cue weights must sum to 1 (i.e. value of the reward) and is encoded as negative covariance between weights. This implies that post-training inflation or deflation of one stimulus will cause changes in beliefs about the other stimulus, which is not possible in TD as it does not measure covariance.
 
-# How to Simulate the Kalman TD Model?
+# How to Simulate the Kalman TD Model ?
 
 ## Create the Stimuli
 First, we need to create the stimuli (i.e. conditioned stimuli) and their associated reward (i.e. unconditioned stimulus). For this we create a small function in the *functions.py* file.
