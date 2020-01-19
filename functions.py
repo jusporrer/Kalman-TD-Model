@@ -8,25 +8,25 @@
 
 import numpy as np
 
-def create_stimulus(onset, duration, trial_length):
+def create_stimuli(onset, duration, trial_length):
 
-    x = np.zeros((trial_length), dtype = np.int)
+    stimuli = np.zeros((trial_length), dtype = np.int)
 
     if onset >= 0:
-        x[onset:(onset + duration)] = 1
-        return x
+        stimuli[onset:(onset + duration)] = 1
+        return stimuli
 
-def construct_matrix(x, trial_length, nb_stimuli):
-    
-    matrix = np.zeros((trial_length,nb_stimuli*10), dtype = np.int)
+def construct_covariance_matrix(stimuli, trial_length, nb_stimuli):
+
+    covariance_matrix = np.zeros((trial_length,nb_stimuli*10), dtype = np.int)
 
     start=0
     finish=1
     for i in range(nb_stimuli):
 
-        matrix[::,start*trial_length:finish*trial_length] = np.diag(x[:,i])
+        covariance_matrix[::,start*trial_length:finish*trial_length] = np.diag(stimuli[:,i])
 
         start += 1
         finish += 1
 
-    return matrix
+    return covariance_matrix
