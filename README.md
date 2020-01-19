@@ -82,6 +82,7 @@ We expect that the **Kalman TD model predicts well these results** compared to t
 Only the Kalman TD model learns that cue weights must sum to 1 (i.e. value of the reward) and is encoded as negative covariance between weights. This implies that post-training inflation or deflation of one stimulus will cause changes in beliefs about the other stimulus, which is not possible in TD as it does not measure covariance.
 
 # How to Simulate the Kalman TD Model
+To initiate the code simply run *run.py*. 
 
 ## Create the Stimuli
 First, we need to create the stimuli (i.e. conditioned stimuli) and their associated reward (i.e. unconditioned stimulus). For this we create a small function in the *functions.py* file.
