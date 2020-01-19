@@ -6,8 +6,6 @@
 # PLoS Computational Biology 11, 1–20.
 # -------------------------------------------------------------------------
 
-import sys
-import os
 import numpy as np
 
 def create_stimulus(onset, duration, trial_length):
