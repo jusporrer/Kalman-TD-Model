@@ -60,10 +60,10 @@ The KF can account for this phenomenon only when the compound is presented simul
 ## Behavioural Example (Shevill & Hall, 2004)
 In particular, Shevill & Hall (2004) look at the effect of extinguishing the second-order stimulus Z on the responding to the first order stimulus.
 
-| Phase 1        | Phase 2       | Test   |
-| :-------------:|:-------------:| :-----:|
-| A -> X -> +    | A -> -        | X -> ? |
-| B -> Y -> +    |               | Y -> ? |
+| Phase 1                         | Phase 2                        | Test                            |
+| :------------------------------:|:------------------------------:| :------------------------------:|
+| A -> X -> +                     | A -> -                         | X -> ?                          |
+| B -> Y -> +                     |                                | Y -> ?                          |
 
 In a serial overshadowing procedure, the second-order stimulus (i.e. A) overshadows the first-order stimulus (i.e. X). Extinguishing the second-order stimulus (i.e. by not reinforcing it)  thus causes recovery from overshadowing. The behavioural results show higher value of the stimulus X relative to the stimulus Y whose associated second-order stimulus (i.e. B) had not be extinguished.
 
