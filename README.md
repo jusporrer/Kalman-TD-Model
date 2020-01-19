@@ -36,7 +36,7 @@ Both theories can be seen as a generalisation of the seminal Rescorla-Wagner but
 - An agent learns about long-term cumulative future reward using **Reinforcement Learning (RL) principles** and represented by **Temporal Difference (TD)**.
 > TD learns a *single value* of expected *future* cumulative reward
 
-<img src="https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG" alt="alt text" width="186.8" height="123.2">
+![Figure 1]("https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/FIG1.JPG")
 
 ## Unifying Model
 
@@ -327,6 +327,8 @@ plt.show()
 fig1.savefig('fig_simulation_KalmanTD.pdf', bbox_inches='tight')
 
 ```
+![Figure 2]("https://github.com/jusporrer/PCBS-Kalman-Filter/blob/master/fig_simulation_KalmanTD.pdf")
+
 The *run.py* file is also the one in which all the parameters are set. Thus, it is easily possible to generate new simulations with different parameters.
 
 # Conclusion
